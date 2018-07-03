@@ -1,3 +1,4 @@
+// import Type definitions
 import { BigNumber } from "./bignumber";
 import { LocalContractStorage, Blockchain, StorageMap, Event } from "./System";
 // Make Sure delete those imports above to deploy
@@ -23,7 +24,9 @@ class DepositeContent {
 
 }
 
+// `type` here works like `typedef` in c++
 type CommonAxisType = number | string
+
 class Axis {
     x: CommonAxisType;
     y: CommonAxisType;
@@ -40,8 +43,13 @@ class Axis {
 }
 
 class DictContract {
+    // Only for type annotations, 
+    // In JavaScript, we don't need to declare member variable in the class, 
+    // not in TypeScript though
     name: string;
+
     constructor() {
+        // 一个猜测: 每次虚拟机都要执行合约构造方法，可能从 LocalContractStorage 获得成员变量的值
         LocalContractStorage.defineProperties(this, {
             name: null,
         })
@@ -56,19 +64,21 @@ class DictContract {
         });
     }
 
-        // init function.
+    // init function. 只有创建合约的时候执行
     init(name) {
         this.name = name;
     }
 
+    // sure, you still have auto Type Inference
     getName() {
         return this.name
     }
 
-    changeName(str) {
+    changeName(str :string) {
         this.name = str
     }
 
+    // Test BigNumber and Type annotations for parameters
     testBigNumber(number :string | number) :String{
         return new BigNumber(number).toString()
     }
@@ -86,5 +96,8 @@ class DictContract {
     }
 
 }
+
+
+// Only one true exports???
 
 module.exports = DictContract
