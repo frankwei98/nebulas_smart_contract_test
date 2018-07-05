@@ -1,19 +1,12 @@
 'use strict';
 
-//
-var HttpRequest = require("../../node-request");
-
 var Wallet = require("nebulas");
-var Account = Wallet.Account;
-var Transaction = Wallet.Transaction;
-var Utils = Wallet.Utils;
-var Unit = Wallet.Unit;
-
+var { HttpRequest, Account, Transaction, Unit, Utils, Neb  } = Wallet
 var { expect } = require('chai');
 var BigNumber = require('bignumber.js');
 var FS = require("fs");
 
-var neb = new Wallet.Neb();
+var neb = new Neb();
 neb.setRequest(new HttpRequest("https://testnet.nebulas.io"));
 var ChainID = 100;
 var sourceAccount = new Account("a6e5eb290e1438fce79f5cb8774a72621637c2c9654c8b2525ed1d7e4e73653f");
@@ -38,7 +31,7 @@ console.log("env:", env);
 if (env === 'local') {
     neb.setRequest(new HttpRequest("http://localhost:8685"));//
     ChainID = 100;
-    sourceAccount = new Wallet.Account("1d3fe06a53919e728315e2ccca41d4aa5b190845a79007797517e62dbc0df454");
+    sourceAccount = new Account("1d3fe06a53919e728315e2ccca41d4aa5b190845a79007797517e62dbc0df454");
     coinbase = "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5";
     if (!redeploy) {
         contractAddr = "e5a02995444628cf7935e3ef8b613299a2d97e6d188ce808";  //js
@@ -107,7 +100,7 @@ function deployContract(testInput, done) {
         fromState = state;
         console.log("from state: " + JSON.stringify(fromState));
     }).then(function () {
-        var filepath = "../nf/nvm/test/super_dictionary." + testInput.contractType;
+        var filepath = "./dict.js";
         console.log("deploying contract: " + filepath);
         var bankvault = FS.readFileSync(filepath, "utf-8");
         var contract = {

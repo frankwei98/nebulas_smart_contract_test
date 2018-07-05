@@ -1,6 +1,6 @@
 // import Type definitions
 import { BigNumber } from "./bignumber";
-import { LocalContractStorage, Blockchain, StorageMap, Event } from "./System";
+import { LocalContractStorage, Blockchain, Descriptor, StorageMap, Event } from "./System";
 // Make Sure delete those imports above to deploy
 
 class DepositeContent {
@@ -42,6 +42,15 @@ class Axis {
     }
 }
 
+const BigNumberDescriptor :Descriptor = {
+    parse: function (value) {
+        return new BigNumber(value);
+    },
+    stringify: function (o) {
+        return o.toString(10);
+    }
+}
+
 class DictContract {
     // Only for type annotations, 
     // In JavaScript, we don't need to declare member variable in the class, 
@@ -52,6 +61,7 @@ class DictContract {
         // 一个猜测: 每次虚拟机都要执行合约构造方法，可能从 LocalContractStorage 获得成员变量的值
         LocalContractStorage.defineProperties(this, {
             name: null,
+            price: BigNumberDescriptor
         })
         LocalContractStorage.defineMapProperty(this, "bankVault", {
             parse(text: string): DepositeContent {
